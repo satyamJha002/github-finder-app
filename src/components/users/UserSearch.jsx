@@ -18,8 +18,13 @@ function UserSearch() {
       setAlert("Please enter something", "error");
     } else {
       dispatch({ type: "SET_LOADING" });
-      const users = await searchUsers(text);
-      dispatch({ type: "GET_USERS", payload: users });
+      try {
+        const users = await searchUsers(text);
+        dispatch({ type: "GET_USERS", payload: users });
+      } catch (err) {
+        dispatch({ type: "GET_USERS", payload: [] });
+        setAlert("Something went wrong fetching users", "error");
+      }
 
       setText("");
     }
